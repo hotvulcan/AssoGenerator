@@ -5,14 +5,14 @@ require 'rails/generators/base'
   end
   def gen_forien_key class_from,class_to
     print "CHECKPOINT>>> ",class_from,",",class_to,"\n"
-    generate "migration", "add_#{class_to.tableize.singularize}_id_to#{class_to.tableize} #{class_to.tableize.singularize}:references" 
+    generate "migration", "add_#{class_to.tableize.downcase.singularize.downcase}_id_to#{class_to.tableize.downcase} #{class_to.tableize.downcase.singularize}:references" 
     
   end
   def do_add_relation (left_class,relation,right_class,option=nil,option_vars=[])
     params = [left_class,relation,right_class,option=nil,option_vars=[]]
     print "\n>>", params.join( "|"), "\n"
-    left_class_file = File.join(Rails.root,"app/models/#{left_class.tableize.singularize}.rb")
-    right_class_file= File.join(Rails.root,"app/models/#{right_class.tableize.singularize}.rb")
+    left_class_file = File.join(Rails.root,"app/models/#{left_class.tableize.downcase.singularize}.rb")
+    right_class_file= File.join(Rails.root,"app/models/#{right_class.tableize.downcase.singularize}.rb")
     print ">> ", right_class_file ,"\n"
     right_attribute_names = right_class.constantize.attribute_names.map{|n|n.downcase}
     left_attribute_names  =  left_class.constantize.attribute_names.map{|n|n.downcase}
@@ -26,7 +26,7 @@ require 'rails/generators/base'
       end #生成外键完成
 
       inject_into_file left_class_file,after:"class #{left_class} < ApplicationRecord\n" do
-        "  has_one :#{right_class.tableize.singularize}\n"
+        "  has_one :#{right_class.tableize.downcase.singularize}\n"
       end
       
     when "has_many"===relation
@@ -35,7 +35,7 @@ require 'rails/generators/base'
         gen_forien_key right_class,left_class
       end #生成外键完成
       inject_into_file left_class_file,after:"class #{left_class} < ApplicationRecord\n" do
-        "  has_many :#{right_class.tableize.singularize}\n"
+        "  has_many :#{right_class.tableize.downcase.singularize}\n"
       end
 
     when "belongs_to"===relation
@@ -45,7 +45,7 @@ require 'rails/generators/base'
       end #生成外键完成
 
       inject_into_file left_class_file,after:"class #{left_class} < ApplicationRecord\n" do
-        "  belongs_to :#{right_class.tableize.singularize}\n"
+        "  belongs_to :#{right_class.tableize.downcase.singularize}\n"
       end
     when "many_to_many"===relation
       if left_class === right_class
@@ -81,10 +81,10 @@ require 'rails/generators/base'
         if !option_vars.empty?
           join_model = option_vars.shift
         else
-          join_model = "#{left_class.tableize.singularize}_#{right_class.tableize}"
+          join_model = "#{left_class.tableize.downcase.singularize}_#{right_class.tableize}"
         end
         join_model = join_model.tableize.singularize
-        generate "model","#{join_model} #{left_class}:references #{right_class}:references #{option_vars.join(" ")}"
+        generate "model","#{join_model} #{left_class.tableize.downcase.singularize}:references #{right_class.tableize.downcase.singularize}:references #{option_vars.join(" ")}"
       end
       join_class = join_model.classify
       join_attribute_names = join_class.constantize.attribute_names.map{|n| n.downcase}
@@ -97,13 +97,13 @@ require 'rails/generators/base'
       end #生成外键完成
       join_model_file = File.join(Rails.root,"app/models/#{join_model}.rb")
       inject_into_file join_model_file,after:"class #{join_class}  < ApplicationRecord\n" do
-        "  belongs_to :#{left_class.tableize.singularize}\n  belongs_to :#{right_class.tableize.singularize}\n"
+        "  belongs_to :#{left_class.tableize.downcase.singularize}\n  belongs_to :#{right_class.tableize.downcase.singularize}\n"
       end
       inject_into_file left_class_file,after:"class #{left_class} < ApplicationRecord\n" do
-        "  has_many :#{join_model}\n  has_many :#{right_class.tableize}, :through => :#{join_model}\n"
+        "  has_many :#{join_model}\n  has_many :#{right_class.tableize.downcase.pluralize}, :through => :#{join_model}\n"
       end
       inject_into_file right_class_file,after:"class #{right_class} < ApplicationRecord\n" do
-        "  has_many :#{join_model}\n  has_many :#{left_class.tableize}, :through => :#{join_model}\n"
+        "  has_many :#{join_model}\n  has_many :#{left_class.tableize.downcase.pluralize}, :through => :#{join_model}\n"
       end
     else
       print "ERROR:unknow relationship:#{relation}. going to die\n" 
@@ -133,8 +133,8 @@ require 'rails/generators/base'
     #1. check left class is there. die if none.
     left_class = class_name
     #todo just die now
-    left_object = left_class.constantize 
     print "Makeing relations of <#{left_class}>:\n"
+    left_object = left_class.constantize 
     #2.  for each relation do:
     jobs=[]
     relations.each do | relation |
