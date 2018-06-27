@@ -35,7 +35,7 @@ require 'rails/generators/base'
         gen_forien_key right_class,left_class
       end #生成外键完成
       inject_into_file left_class_file,after:"class #{left_class} < ApplicationRecord\n" do
-        "  has_many :#{right_class.tableize.downcase.singularize}\n"
+        "  has_many :#{right_class.tableize.downcase.pluralize}\n"
       end
 
     when "belongs_to"===relation
@@ -100,10 +100,10 @@ require 'rails/generators/base'
         "  belongs_to :#{left_class.tableize.downcase.singularize}\n  belongs_to :#{right_class.tableize.downcase.singularize}\n"
       end
       inject_into_file left_class_file,after:"class #{left_class} < ApplicationRecord\n" do
-        "  has_many :#{join_model}\n  has_many :#{right_class.tableize.downcase.pluralize}, :through => :#{join_model}\n"
+        "  has_many :#{join_model.downcase.pluralize}\n  has_many :#{right_class.tableize.downcase.pluralize}, :through => :#{join_model}\n"
       end
       inject_into_file right_class_file,after:"class #{right_class} < ApplicationRecord\n" do
-        "  has_many :#{join_model}\n  has_many :#{left_class.tableize.downcase.pluralize}, :through => :#{join_model}\n"
+        "  has_many :#{join_model.downcase.pluralize}\n  has_many :#{left_class.tableize.downcase.pluralize}, :through => :#{join_model}\n"
       end
     else
       print "ERROR:unknow relationship:#{relation}. going to die\n" 
