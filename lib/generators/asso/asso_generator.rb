@@ -5,7 +5,7 @@ require 'rails/generators/base'
   end
   def gen_forien_key class_from,class_to
     print "CHECKPOINT>>> ",class_from,",",class_to,"\n"
-    generate "migration", "add_#{class_to.tableize.downcase.singularize.downcase}_id_to#{class_to.tableize.downcase} #{class_to.tableize.downcase.singularize}:references" 
+    generate "migration", "add_#{class_to.tableize.downcase.singularize.downcase}_id_to_#{class_to.tableize.downcase} #{class_to.tableize.downcase.singularize}:references" 
     
   end
   def do_add_relation (left_class,relation,right_class,option=nil,option_vars=[])
