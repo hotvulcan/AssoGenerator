@@ -1,3 +1,15 @@
+
+# the api will be:
+# rails g asso user \
+#    has_one:avatar \
+#    has_many:docs:belongs_to_me \
+#    belongs_to:house \
+#    belongs_to:dark_lord:has_one_me \
+#    many_to_many:schools \
+#    many_to_many:users:through:friendship 
+#    many_to_many:doctor:through_with_extra:apointment:start_at,datetime:end_at,datetime
+#options 
+
 require 'rails/generators/base'
 
   def todo(what)
@@ -114,17 +126,6 @@ require 'rails/generators/base'
   class AssoGenerator < Rails::Generators::NamedBase
   source_root File.expand_path('templates', __dir__)
   argument :relations, :type => :array, :default => [], :banner => "action action"
-  
-  # the api will be:
-  # rails g asso user \
-  #    has_one:avatar \
-  #    has_many:docs:belongs_to_me \
-  #    belongs_to:house \
-  #    belongs_to:dark_lord:has_one_me \
-  #    many_to_many:schools \
-  #    many_to_many:users:through:friendship 
-  #    many_to_many:doctor:through_with_extra:apointment:start_at,datetime:end_at,datetime
-  #options 
 
   
   def make_relations
