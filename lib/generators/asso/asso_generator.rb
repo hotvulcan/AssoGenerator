@@ -112,10 +112,10 @@ require 'rails/generators/base'
         "  belongs_to :#{left_class.tableize.downcase.singularize}\n  belongs_to :#{right_class.tableize.downcase.singularize}\n"
       end
       inject_into_file left_class_file,after:"class #{left_class} < ApplicationRecord\n" do
-        "  has_many :#{join_model.downcase.pluralize}\n  has_many :#{right_class.tableize.downcase.pluralize}, :through => :#{join_model}\n"
+        "  has_many :#{join_model.downcase.pluralize}\n  has_many :#{right_class.tableize.downcase.pluralize}, :through => :#{join_model.pluralize}\n"
       end
       inject_into_file right_class_file,after:"class #{right_class} < ApplicationRecord\n" do
-        "  has_many :#{join_model.downcase.pluralize}\n  has_many :#{left_class.tableize.downcase.pluralize}, :through => :#{join_model}\n"
+        "  has_many :#{join_model.downcase.pluralize}\n  has_many :#{left_class.tableize.downcase.pluralize}, :through => :#{join_model.pluralize}\n"
       end
     else
       print "ERROR:unknow relationship:#{relation}. going to die\n" 
