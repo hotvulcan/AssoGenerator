@@ -16,8 +16,8 @@ require 'rails/generators/base'
     print "TODO>>> ", what ,"\n"
   end
   def gen_forien_key class_from,class_to
-    print "CHECKPOINT>>> ",class_from,",",class_to,"\n"
-    generate "migration", "add_#{class_to.tableize.downcase.singularize.downcase}_id_to_#{class_to.tableize.downcase} #{class_to.tableize.downcase.singularize}:references" 
+    print "gen_forien_key>>> ",class_from,",",class_to,"\n"
+    generate "migration", "add_#{class_to.tableize.downcase.singularize.downcase}_id_to_#{class_from.tableize.downcase} #{class_to.tableize.downcase.singularize}:references" 
     
   end
   def do_add_relation (left_class,relation,right_class,option=nil,option_vars=[])
@@ -134,7 +134,7 @@ require 'rails/generators/base'
     #1. check left class is there. die if none.
     left_class = class_name
     #todo just die now
-    print "Makeing relations of <#{left_class}>:\n"
+    print "============================\nMakeing relations of <#{left_class}>:\n"
     left_object = left_class.constantize 
     #2.  for each relation do:
     jobs=[]
@@ -148,7 +148,7 @@ require 'rails/generators/base'
 
       #2.1 TODO check if the relations is made already.
       #2.2 detemine what relation it will be. add reverse relations to jobs
-      print "found ", relation," to ",right_class,"\n"
+      print "\n-------------------------------\nfound ", relation," to ",right_class,"\n"
       do_add_relation(the_left_class,relation,right_class,option,option_vars)
       if ["HasOneMe","HasMeOnly","HasOlnyMe","HasOne","hasone","has_one_me","has_me_only","has_only_me","has_one"].include? option 
         relation="has_one"
