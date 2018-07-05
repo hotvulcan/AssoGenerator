@@ -131,6 +131,8 @@ require 'rails/generators/base'
   def make_relations
     
     require 'active_support'
+    #0 TODO  check if the relation was already made.
+    todo "check if the relation was already made."
     #1. check left class is there. die if none.
     left_class = class_name
     #todo just die now

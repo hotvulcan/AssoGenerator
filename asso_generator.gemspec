@@ -2,7 +2,7 @@ $:.push File.expand_path("../lib", __FILE__)
 
 Gem::Specification.new do |s|
   s.name        = "asso_generator"
-  s.version     = "0.3"
+  s.version     = "0.4"
   s.platform    = "ruby"
   s.authors     = ["Vincent Luc"]
   s.email       = ["hotvulcan@gmail.com"]
