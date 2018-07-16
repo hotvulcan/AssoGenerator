@@ -9,3 +9,4 @@ rails g asso user has_one:avatar:belongs_to_me has_many:docs many_to_many:dark_l
 == TODO
   1. a proper document
   2. many to many relation of self.
+  3. check if the relation was already made.
